@@ -175,6 +175,9 @@ app.post("/api/franchise-application", async (req, res) => {
   }
 });
 
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Serve the HTML file
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
