@@ -12,161 +12,179 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static("public"));
 
-// Log requests
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
-  next();
-});
-
-// Email transporter
+// Email transporter configuration
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  tls: {
+    rejectUnauthorized: false,
+  },
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
 });
 
-// Verify email on startup
+// Verify transporter configuration
 transporter.verify((error, success) => {
   if (error) {
-    console.error("❌ Email configuration error:", error.message);
+    console.log("Email configuration error:", error);
   } else {
-    console.log("✅ Email server is ready");
+    console.log("Email server is ready to send messages");
   }
 });
 
-// Hero enquiry route
+// Route: Hero Form Submission
 app.post("/api/hero-enquiry", async (req, res) => {
-  console.log("📩 Hero enquiry received:", req.body);
-  
+  const { name, email, phone, city } = req.body;
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: process.env.RECIPIENT_EMAIL,
+    subject: "🔔 New Enquiry from Website - ASPO Healthcare",
+    html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+                <h2 style="color: #1e40af; border-bottom: 3px solid #3b82f6; padding-bottom: 10px;">New Website Enquiry</h2>
+                
+                <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="color: #1f2937; margin-top: 0;">Contact Details:</h3>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="padding: 10px 0; color: #4b5563; font-weight: bold; width: 120px;">Name:</td>
+                            <td style="padding: 10px 0; color: #1f2937;">${name}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; color: #4b5563; font-weight: bold;">Email:</td>
+                            <td style="padding: 10px 0; color: #1f2937;">${email}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; color: #4b5563; font-weight: bold;">Phone:</td>
+                            <td style="padding: 10px 0; color: #1f2937;">${phone}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; color: #4b5563; font-weight: bold;">City:</td>
+                            <td style="padding: 10px 0; color: #1f2937;">${
+                              city || "Not provided"
+                            }</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <p style="color: #6b7280; font-size: 14px; margin-top: 20px;">
+                    📅 Submitted: ${new Date().toLocaleString("en-IN", {
+                      timeZone: "Asia/Kolkata",
+                    })}
+                </p>
+                
+                <div style="margin-top: 20px; padding: 15px; background-color: #dbeafe; border-left: 4px solid #3b82f6; border-radius: 4px;">
+                    <p style="margin: 0; color: #1e40af; font-size: 13px;">
+                        <strong>Action Required:</strong> Please respond to this enquiry within 24 hours.
+                    </p>
+                </div>
+            </div>
+        `,
+  };
+
   try {
-    const { name, email, phone, city } = req.body;
-
-    if (!name || !email || !phone) {
-      return res.status(200).json({
-        success: false,
-        message: "Please fill all required fields."
-      });
-    }
-
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: process.env.RECIPIENT_EMAIL || process.env.EMAIL_USER,
-      subject: "🔔 New Website Enquiry - ASPO Healthcare",
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
-          <div style="background-color: white; padding: 20px; border-radius: 10px;">
-            <h2 style="color: #1e40af;">New Enquiry from Website</h2>
-            <hr>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${phone}</p>
-            <p><strong>City:</strong> ${city || "Not provided"}</p>
-            <hr>
-            <p style="color: #666; font-size: 12px;">Received: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</p>
-          </div>
-        </div>
-      `
-    };
-
     await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent successfully");
-    
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      message: "Thank you! We will contact you within 24 hours."
+      message: "Enquiry submitted successfully! We will contact you soon.",
     });
-
   } catch (error) {
-    console.error("❌ Error:", error.message);
-    return res.status(200).json({
+    console.error("Error sending email:", error);
+    res.status(500).json({
       success: false,
-      message: "Form received. We will contact you soon."
+      message:
+        "Failed to submit enquiry. Please try again or call us directly.",
     });
   }
 });
 
-// Franchise application route
+// Route: Franchise Application Form
 app.post("/api/franchise-application", async (req, res) => {
-  console.log("🤝 Franchise application received:", req.body);
-  
+  const { name, email, phone, message } = req.body;
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: process.env.RECIPIENT_EMAIL,
+    subject: "🤝 New Franchise Application - ASPO Healthcare",
+    html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+                <h2 style="color: #1e40af; border-bottom: 3px solid #fbbf24; padding-bottom: 10px;">New Franchise Application</h2>
+                
+                <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="color: #1f2937; margin-top: 0;">Applicant Information:</h3>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td style="padding: 10px 0; color: #4b5563; font-weight: bold; width: 120px;">Name:</td>
+                            <td style="padding: 10px 0; color: #1f2937;">${name}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; color: #4b5563; font-weight: bold;">Email:</td>
+                            <td style="padding: 10px 0; color: #1f2937;">${email}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px 0; color: #4b5563; font-weight: bold;">Phone:</td>
+                            <td style="padding: 10px 0; color: #1f2937;">${phone}</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div style="background-color: #fef3c7; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h3 style="color: #1f2937; margin-top: 0;">Business Goals & Experience:</h3>
+                    <p style="color: #1f2937; line-height: 1.6; white-space: pre-wrap;">${
+                      message || "Not provided"
+                    }</p>
+                </div>
+                
+                <p style="color: #6b7280; font-size: 14px; margin-top: 20px;">
+                    📅 Submitted: ${new Date().toLocaleString("en-IN", {
+                      timeZone: "Asia/Kolkata",
+                    })}
+                </p>
+                
+                <div style="margin-top: 20px; padding: 15px; background-color: #fef3c7; border-left: 4px solid #fbbf24; border-radius: 4px;">
+                    <p style="margin: 0; color: #92400e; font-size: 13px;">
+                        <strong>⚠️ Important:</strong> Verify Drug License before proceeding with franchise partnership.
+                    </p>
+                </div>
+            </div>
+        `,
+  };
+
   try {
-    const { name, email, phone, message } = req.body;
-
-    if (!name || !email || !phone) {
-      return res.status(200).json({
-        success: false,
-        message: "Please fill all required fields."
-      });
-    }
-
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: process.env.RECIPIENT_EMAIL || process.env.EMAIL_USER,
-      subject: "🤝 New Franchise Application - ASPO Healthcare",
-      html: `
-        <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;">
-          <div style="background-color: white; padding: 20px; border-radius: 10px;">
-            <h2 style="color: #1e40af;">New Franchise Application</h2>
-            <hr>
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone:</strong> ${phone}</p>
-            <p><strong>Message:</strong></p>
-            <p style="background-color: #f9f9f9; padding: 10px; border-left: 3px solid #1e40af;">
-              ${message || "Not provided"}
-            </p>
-            <hr>
-            <p style="color: #666; font-size: 12px;">Received: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</p>
-          </div>
-        </div>
-      `
-    };
-
     await transporter.sendMail(mailOptions);
-    console.log("✅ Email sent successfully");
-    
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      message: "Application received! We will contact you within 24 hours."
+      message:
+        "Franchise application submitted successfully! Our team will review and contact you within 48 hours.",
     });
-
   } catch (error) {
-    console.error("❌ Error:", error.message);
-    return res.status(200).json({
+    console.error("Error sending email:", error);
+    res.status(500).json({
       success: false,
-      message: "Application received. We will contact you soon."
+      message:
+        "Failed to submit application. Please try again or contact us directly.",
     });
   }
 });
 
-// Health check route
-app.get("/api/health", (req, res) => {
-  res.json({ status: "OK", timestamp: new Date().toISOString() });
-});
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve HTML
+// Serve the HTML file
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: "Route not found" });
-});
-
-// Error handler
-app.use((err, req, res, next) => {
-  console.error("Server error:", err);
-  res.status(500).json({ error: "Internal server error" });
-});
-
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📧 Email: ${process.env.EMAIL_USER}`);
-  console.log(`📬 Recipient: ${process.env.RECIPIENT_EMAIL || process.env.EMAIL_USER}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Make sure to configure your .env file with email credentials`);
 });
