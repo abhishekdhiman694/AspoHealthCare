@@ -41,30 +41,47 @@ transporter.verify((error) => {
 });
 
 // Hero enquiry route
+// Hero enquiry route
 app.post("/api/hero-enquiry", async (req, res) => {
   try {
-    console.log("Hero enquiry:", req.body);
+    console.log("Hero enquiry received:", req.body);
     const { name, email, phone, city } = req.body;
+
+    // Validate input
+    if (!name || !email || !phone) {
+      return res.status(400).json({
+        success: false,
+        message: "Please fill all required fields."
+      });
+    }
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: "New Website Enquiry",
-      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nCity: ${city || "N/A"}`,
+      subject: "🔔 New Website Enquiry - ASPO Healthcare",
+      html: `
+        <h2>New Enquiry from Website</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>City:</strong> ${city || "Not provided"}</p>
+        <hr>
+        <p><small>Received: ${new Date().toLocaleString()}</small></p>
+      `
     };
 
     await transporter.sendMail(mailOptions);
-    console.log("Email sent");
+    console.log("✅ Hero enquiry email sent successfully");
     
-    res.json({
+    return res.status(200).json({
       success: true,
-      message: "Thank you! We will contact you soon."
+      message: "Thank you! We will contact you within 24 hours."
     });
   } catch (error) {
-    console.error("Error:", error.message);
-    res.json({
+    console.error("❌ Hero enquiry error:", error.message);
+    return res.status(200).json({
       success: false,
-      message: "Received. We will contact you."
+      message: "Enquiry received. We will contact you soon."
     });
   }
 });
@@ -72,28 +89,44 @@ app.post("/api/hero-enquiry", async (req, res) => {
 // Franchise route
 app.post("/api/franchise-application", async (req, res) => {
   try {
-    console.log("Franchise application:", req.body);
+    console.log("Franchise application received:", req.body);
     const { name, email, phone, message } = req.body;
+
+    // Validate input
+    if (!name || !email || !phone) {
+      return res.status(400).json({
+        success: false,
+        message: "Please fill all required fields."
+      });
+    }
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
-      subject: "New Franchise Application",
-      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage: ${message || "N/A"}`,
+      subject: "🤝 New Franchise Application - ASPO Healthcare",
+      html: `
+        <h2>New Franchise Application</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Message:</strong> ${message || "Not provided"}</p>
+        <hr>
+        <p><small>Received: ${new Date().toLocaleString()}</small></p>
+      `
     };
 
     await transporter.sendMail(mailOptions);
-    console.log("Email sent");
+    console.log("✅ Franchise application email sent successfully");
     
-    res.json({
+    return res.status(200).json({
       success: true,
-      message: "Application received! We will contact you."
+      message: "Application received! We will contact you within 24 hours."
     });
   } catch (error) {
-    console.error("Error:", error.message);
-    res.json({
+    console.error("❌ Franchise application error:", error.message);
+    return res.status(200).json({
       success: false,
-      message: "Application received. We will contact you."
+      message: "Application received. We will contact you soon."
     });
   }
 });
