@@ -2909,6 +2909,7 @@
 
     <script>
     // Hero Form
+// Hero Form
 document.querySelector('.hero-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -2927,23 +2928,28 @@ document.querySelector('.hero-form').addEventListener('submit', async function (
     try {
         const response = await fetch('/api/hero-enquiry', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
             body: JSON.stringify(formData)
         });
 
-        const text = await response.text();
-        let data;
-        try {
-            data = JSON.parse(text);
-        } catch {
-            throw new Error('Server error');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        alert(data.success ? '✅ ' + data.message : '❌ ' + data.message);
-        if (data.success) this.reset();
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('✅ ' + data.message);
+            this.reset();
+        } else {
+            alert('⚠️ ' + data.message);
+        }
     } catch (error) {
         console.error('Error:', error);
-        alert('❌ Please call +91-9416250082');
+        alert('❌ Unable to submit form. Please call +91-9416250082 or email aspohealthcare@gmail.com');
     } finally {
         button.textContent = originalText;
         button.disabled = false;
@@ -2969,29 +2975,33 @@ document.querySelector('.franchise-form').addEventListener('submit', async funct
     try {
         const response = await fetch('/api/franchise-application', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
             body: JSON.stringify(formData)
         });
 
-        const text = await response.text();
-        let data;
-        try {
-            data = JSON.parse(text);
-        } catch {
-            throw new Error('Server error');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        alert(data.success ? '✅ ' + data.message : '❌ ' + data.message);
-        if (data.success) this.reset();
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('✅ ' + data.message);
+            this.reset();
+        } else {
+            alert('⚠️ ' + data.message);
+        }
     } catch (error) {
         console.error('Error:', error);
-        alert('❌ Please call +91-9416250082');
+        alert('❌ Unable to submit application. Please call +91-9416250082 or email aspohealthcare@gmail.com');
     } finally {
         button.textContent = originalText;
         button.disabled = false;
     }
 });
-
 
         
         /* function animateCounters() {
