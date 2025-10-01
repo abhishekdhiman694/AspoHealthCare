@@ -9,26 +9,20 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-// Enhanced CORS configuration
-app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'https://aspohealthcare.onrender.com', // Add your Render domain
-        'https://*.onrender.com' // Allow all Render subdomains
-    ],
-    credentials: true,
-    methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-// Add this BEFORE your routes
-app.options('*', cors()); // Enable pre-flight for all routes
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
 
-// Email transporter configuration
-// Email transporter configuration
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Log all requests
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`);
+  next();
+});
+
+// Email transporter
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -37,120 +31,79 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Verify on startup
-transporter.verify((error, success) => {
+// Verify email config
+transporter.verify((error) => {
   if (error) {
     console.error("Email config error:", error.message);
   } else {
-    console.log("Email server ready");
+    console.log("Email ready");
   }
 });
 
-// Route: Hero Form Submission
-// Route: Hero Form Submission
+// Hero enquiry route
 app.post("/api/hero-enquiry", async (req, res) => {
-  console.log('Hero enquiry received:', req.body);
-  
-  const { name, email, phone, city } = req.body;
-
-  // Validate input
-  if (!name || !email || !phone) {
-    return res.status(400).json({
-      success: false,
-      message: "Please fill in all required fields"
-    });
-  }
-
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: process.env.RECIPIENT_EMAIL || process.env.EMAIL_USER, // Fallback
-    subject: "New Enquiry from Website - ASPO Healthcare",
-    html: `
-      <div style="font-family: Arial, sans-serif; padding: 20px;">
-        <h2>New Website Enquiry</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>City:</strong> ${city || "Not provided"}</p>
-        <p><strong>Time:</strong> ${new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}</p>
-      </div>
-    `,
-  };
-
   try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent successfully:', info.messageId);
+    console.log("Hero enquiry:", req.body);
+    const { name, email, phone, city } = req.body;
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      subject: "New Website Enquiry",
+      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nCity: ${city || "N/A"}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent");
     
-    return res.status(200).json({
+    res.json({
       success: true,
-      message: "Enquiry submitted successfully! We will contact you soon."
+      message: "Thank you! We will contact you soon."
     });
   } catch (error) {
-    console.error('Email sending failed:', error);
-    
-    return res.status(200).json({ // Changed to 200 to avoid triggering fetch error
+    console.error("Error:", error.message);
+    res.json({
       success: false,
-      message: "Thank you for your interest. We received your details and will contact you soon."
+      message: "Received. We will contact you."
     });
   }
 });
 
-// Route: Franchise Application Form
+// Franchise route
 app.post("/api/franchise-application", async (req, res) => {
-  console.log('Franchise application received:', req.body);
-  
-  const { name, email, phone, message } = req.body;
-
-  if (!name || !email || !phone) {
-    return res.status(400).json({
-      success: false,
-      message: "Please fill in all required fields"
-    });
-  }
-
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: process.env.RECIPIENT_EMAIL || process.env.EMAIL_USER,
-    subject: "New Franchise Application - ASPO Healthcare",
-    html: `
-      <div style="font-family: Arial, sans-serif; padding: 20px;">
-        <h2>New Franchise Application</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone}</p>
-        <p><strong>Message:</strong> ${message || "Not provided"}</p>
-        <p><strong>Time:</strong> ${new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}</p>
-      </div>
-    `,
-  };
-
   try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent successfully:', info.messageId);
+    console.log("Franchise application:", req.body);
+    const { name, email, phone, message } = req.body;
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      subject: "New Franchise Application",
+      text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage: ${message || "N/A"}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent");
     
-    return res.status(200).json({
+    res.json({
       success: true,
-      message: "Application submitted successfully! Our team will review and contact you within 48 hours."
+      message: "Application received! We will contact you."
     });
   } catch (error) {
-    console.error('Email sending failed:', error);
-    
-    return res.status(200).json({
+    console.error("Error:", error.message);
+    res.json({
       success: false,
-      message: "Thank you for your application. We received your details and will contact you soon."
+      message: "Application received. We will contact you."
     });
   }
 });
-// Serve static files from public directory
-app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve the HTML file
+// Serve HTML
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-  console.log(`Make sure to configure your .env file with email credentials`);
+  console.log(`Server running on port ${PORT}`);
 });
