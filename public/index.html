@@ -2908,86 +2908,101 @@
 
 
     <script>
-        document.querySelector('.hero-form').addEventListener('submit', async function (e) {
-            e.preventDefault();
+      // Hero Form Submission (Replace existing hero form handler)
+document.querySelector('.hero-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-            const button = this.querySelector('button[type="submit"]');
-            const originalText = button.textContent;
-            button.textContent = 'Sending...';
-            button.disabled = true;
+    const button = this.querySelector('button[type="submit"]');
+    const originalText = button.textContent;
+    button.textContent = 'Sending...';
+    button.disabled = true;
 
-            const formData = {
-                name: document.getElementById('hero-name').value,
-                email: document.getElementById('hero-email').value,
-                phone: document.getElementById('hero-phone').value,
-                city: document.getElementById('hero-city').value
-            };
+    const formData = {
+        name: document.getElementById('hero-name').value,
+        email: document.getElementById('hero-email').value,
+        phone: document.getElementById('hero-phone').value,
+        city: document.getElementById('hero-city').value
+    };
 
-            try {
-                const response = await fetch('/api/hero-enquiry', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    alert('✅ ' + data.message);
-                    this.reset();
-                } else {
-                    alert('❌ ' + data.message);
-                }
-            } catch (error) {
-                alert('❌ Network error. Please check your connection or call us directly at +91-9416250082');
-            } finally {
-                button.textContent = originalText;
-                button.disabled = false;
-            }
+    try {
+        const response = await fetch('/api/hero-enquiry', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+            mode: 'cors',
+            credentials: 'same-origin'
         });
 
-        // Franchise Form Submission
-        document.querySelector('.franchise-form').addEventListener('submit', async function (e) {
-            e.preventDefault();
+        if (!response.ok) {
+            throw new Error(`Server responded with status: ${response.status}`);
+        }
 
-            const button = this.querySelector('button[type="submit"]');
-            const originalText = button.textContent;
-            button.textContent = 'Submitting Application...';
-            button.disabled = true;
+        const data = await response.json();
 
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                message: document.getElementById('message').value
-            };
+        if (data.success) {
+            alert('Thank you! Your enquiry has been submitted successfully. We will contact you soon.');
+            this.reset();
+        } else {
+            alert('Submission failed: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Submission error:', error);
+        alert('Unable to submit form. Please call us directly at +91-9416250082 or email aspohealthcare@gmail.com');
+    } finally {
+        button.textContent = originalText;
+        button.disabled = false;
+    }
+});
 
-            try {
-                const response = await fetch('/api/franchise-application', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
+// Franchise Form Submission (Replace existing franchise form handler)
+document.querySelector('.franchise-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-                const data = await response.json();
+    const button = this.querySelector('button[type="submit"]');
+    const originalText = button.textContent;
+    button.textContent = 'Submitting Application...';
+    button.disabled = true;
 
-                if (data.success) {
-                    alert('✅ ' + data.message);
-                    this.reset();
-                } else {
-                    alert('❌ ' + data.message);
-                }
-            } catch (error) {
-                alert('❌ Network error. Please check your connection or call us directly at +91-9416250082');
-            } finally {
-                button.textContent = originalText;
-                button.disabled = false;
-            }
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        message: document.getElementById('message').value
+    };
+
+    try {
+        const response = await fetch('/api/franchise-application', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+            mode: 'cors',
+            credentials: 'same-origin'
         });
+
+        if (!response.ok) {
+            throw new Error(`Server responded with status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Thank you! Your franchise application has been submitted. Our team will review and contact you within 48 hours.');
+            this.reset();
+        } else {
+            alert('Submission failed: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Submission error:', error);
+        alert('Unable to submit application. Please call us directly at +91-9416250082 or email aspohealthcare@gmail.com');
+    } finally {
+        button.textContent = originalText;
+        button.disabled = false;
+    }
+});
         /* function animateCounters() {
              const counters = document.querySelectorAll('.stat-number');
  
