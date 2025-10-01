@@ -26,10 +26,6 @@ try {
     console.error('Email config error:', error);
 }
 
-// Simple test route
-app.get('/api/health', (req, res) => {
-    res.status(200).json({ status: 'ok', time: new Date() });
-});
 
 // Hero form
 app.post('/api/hero-enquiry', async (req, res) => {
