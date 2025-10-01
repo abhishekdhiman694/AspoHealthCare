@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-    origin: ['https://aspohealthcare.onrender.com', 'http://localhost:3000'],
+    origin: '*', // Allow all origins for now (restrict later for security)
     methods: ['GET', 'POST'],
     credentials: true
 }));
