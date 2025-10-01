@@ -2907,87 +2907,112 @@
 
 
 
-    <script>
-        document.querySelector('.hero-form').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const button = this.querySelector('button[type="submit"]');
-            const originalText = button.textContent;
-            button.textContent = 'Sending...';
-            button.disabled = true;
-
-            const formData = {
-                name: document.getElementById('hero-name').value,
-                email: document.getElementById('hero-email').value,
-                phone: document.getElementById('hero-phone').value,
-                city: document.getElementById('hero-city').value
-            };
-
-            try {
-                const response = await fetch('/api/hero-enquiry', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    alert('✅ ' + data.message);
-                    this.reset();
-                } else {
-                    alert('❌ ' + data.message);
-                }
-            } catch (error) {
-                alert('❌ Network error. Please check your connection or call us directly at +91-9416250082');
-            } finally {
-                button.textContent = originalText;
-                button.disabled = false;
-            }
+   <script>
+document.querySelector('.hero-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const button = this.querySelector('button[type="submit"]');
+    const originalText = button.textContent;
+    button.textContent = 'Sending...';
+    button.disabled = true;
+    
+    const formData = {
+        name: document.getElementById('hero-name').value,
+        email: document.getElementById('hero-email').value,
+        phone: document.getElementById('hero-phone').value,
+        city: document.getElementById('hero-city').value
+    };
+    
+    try {
+        const response = await fetch('/api/hero-enquiry', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
         });
+        
+        // Check if response is OK first
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+        
+        // Check content type before parsing
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('Server returned non-JSON response');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('✅ ' + data.message);
+            this.reset();
+        } else {
+            alert('❌ ' + data.message);
+        }
+    } catch (error) {
+        console.error('Full error:', error); // This will show in console
+        alert('❌ Network error. Please check your connection or call us directly at +91-9416250082');
+    } finally {
+        button.textContent = originalText;
+        button.disabled = false;
+    }
+});
 
-        // Franchise Form Submission
-        document.querySelector('.franchise-form').addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            const button = this.querySelector('button[type="submit"]');
-            const originalText = button.textContent;
-            button.textContent = 'Submitting Application...';
-            button.disabled = true;
-
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                message: document.getElementById('message').value
-            };
-
-            try {
-                const response = await fetch('/api/franchise-application', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    alert('✅ ' + data.message);
-                    this.reset();
-                } else {
-                    alert('❌ ' + data.message);
-                }
-            } catch (error) {
-                alert('❌ Network error. Please check your connection or call us directly at +91-9416250082');
-            } finally {
-                button.textContent = originalText;
-                button.disabled = false;
-            }
+// Franchise Form Submission
+document.querySelector('.franchise-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const button = this.querySelector('button[type="submit"]');
+    const originalText = button.textContent;
+    button.textContent = 'Submitting Application...';
+    button.disabled = true;
+    
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        message: document.getElementById('message').value
+    };
+    
+    try {
+        const response = await fetch('/api/franchise-application', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
         });
+        
+        // Check if response is OK first
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+        
+        // Check content type before parsing
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('Server returned non-JSON response');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            alert('✅ ' + data.message);
+            this.reset();
+        } else {
+            alert('❌ ' + data.message);
+        }
+    } catch (error) {
+        console.error('Full error:', error); // This will show in console
+        alert('❌ Network error. Please check your connection or call us directly at +91-9416250082');
+    } finally {
+        button.textContent = originalText;
+        button.disabled = false;
+    }
+});
+</script>
         /* function animateCounters() {
              const counters = document.querySelectorAll('.stat-number');
  
