@@ -2908,7 +2908,7 @@
 
 
     <script>
-      // Hero Form Submission (Replace existing hero form handler)
+    // Hero Form
 document.querySelector('.hero-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -2927,42 +2927,36 @@ document.querySelector('.hero-form').addEventListener('submit', async function (
     try {
         const response = await fetch('/api/hero-enquiry', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-            mode: 'cors',
-            credentials: 'same-origin'
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
         });
 
-        if (!response.ok) {
-            throw new Error(`Server responded with status: ${response.status}`);
+        const text = await response.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch {
+            throw new Error('Server error');
         }
 
-        const data = await response.json();
-
-        if (data.success) {
-            alert('Thank you! Your enquiry has been submitted successfully. We will contact you soon.');
-            this.reset();
-        } else {
-            alert('Submission failed: ' + data.message);
-        }
+        alert(data.success ? '✅ ' + data.message : '❌ ' + data.message);
+        if (data.success) this.reset();
     } catch (error) {
-        console.error('Submission error:', error);
-        alert('Unable to submit form. Please call us directly at +91-9416250082 or email aspohealthcare@gmail.com');
+        console.error('Error:', error);
+        alert('❌ Please call +91-9416250082');
     } finally {
         button.textContent = originalText;
         button.disabled = false;
     }
 });
 
-// Franchise Form Submission (Replace existing franchise form handler)
+// Franchise Form
 document.querySelector('.franchise-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const button = this.querySelector('button[type="submit"]');
     const originalText = button.textContent;
-    button.textContent = 'Submitting Application...';
+    button.textContent = 'Submitting...';
     button.disabled = true;
 
     const formData = {
@@ -2975,34 +2969,31 @@ document.querySelector('.franchise-form').addEventListener('submit', async funct
     try {
         const response = await fetch('/api/franchise-application', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-            mode: 'cors',
-            credentials: 'same-origin'
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
         });
 
-        if (!response.ok) {
-            throw new Error(`Server responded with status: ${response.status}`);
+        const text = await response.text();
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch {
+            throw new Error('Server error');
         }
 
-        const data = await response.json();
-
-        if (data.success) {
-            alert('Thank you! Your franchise application has been submitted. Our team will review and contact you within 48 hours.');
-            this.reset();
-        } else {
-            alert('Submission failed: ' + data.message);
-        }
+        alert(data.success ? '✅ ' + data.message : '❌ ' + data.message);
+        if (data.success) this.reset();
     } catch (error) {
-        console.error('Submission error:', error);
-        alert('Unable to submit application. Please call us directly at +91-9416250082 or email aspohealthcare@gmail.com');
+        console.error('Error:', error);
+        alert('❌ Please call +91-9416250082');
     } finally {
         button.textContent = originalText;
         button.disabled = false;
     }
 });
+
+
+        
         /* function animateCounters() {
              const counters = document.querySelectorAll('.stat-number');
  
