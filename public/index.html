@@ -2909,7 +2909,6 @@
 
     <script>
     // Hero Form
-// Hero Form
 document.querySelector('.hero-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -2919,37 +2918,29 @@ document.querySelector('.hero-form').addEventListener('submit', async function (
     button.disabled = true;
 
     const formData = {
-        name: document.getElementById('hero-name').value,
-        email: document.getElementById('hero-email').value,
-        phone: document.getElementById('hero-phone').value,
-        city: document.getElementById('hero-city').value
+        name: document.getElementById('hero-name').value.trim(),
+        email: document.getElementById('hero-email').value.trim(),
+        phone: document.getElementById('hero-phone').value.trim(),
+        city: document.getElementById('hero-city').value.trim()
     };
 
     try {
         const response = await fetch('/api/hero-enquiry', {
             method: 'POST',
             headers: { 
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
         const data = await response.json();
         
-        if (data.success) {
-            alert('✅ ' + data.message);
-            this.reset();
-        } else {
-            alert('⚠️ ' + data.message);
-        }
+        alert(data.success ? '✅ ' + data.message : '⚠️ ' + data.message);
+        if (data.success) this.reset();
+        
     } catch (error) {
-        console.error('Error:', error);
-        alert('❌ Unable to submit form. Please call +91-9416250082 or email aspohealthcare@gmail.com');
+        console.error('Form Error:', error);
+        alert('❌ Unable to submit. Please call +91-9416250082');
     } finally {
         button.textContent = originalText;
         button.disabled = false;
@@ -2966,37 +2957,29 @@ document.querySelector('.franchise-form').addEventListener('submit', async funct
     button.disabled = true;
 
     const formData = {
-        name: document.getElementById('name').value,
-        email: document.getElementById('email').value,
-        phone: document.getElementById('phone').value,
-        message: document.getElementById('message').value
+        name: document.getElementById('name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        message: document.getElementById('message').value.trim()
     };
 
     try {
         const response = await fetch('/api/franchise-application', {
             method: 'POST',
             headers: { 
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
         const data = await response.json();
         
-        if (data.success) {
-            alert('✅ ' + data.message);
-            this.reset();
-        } else {
-            alert('⚠️ ' + data.message);
-        }
+        alert(data.success ? '✅ ' + data.message : '⚠️ ' + data.message);
+        if (data.success) this.reset();
+        
     } catch (error) {
-        console.error('Error:', error);
-        alert('❌ Unable to submit application. Please call +91-9416250082 or email aspohealthcare@gmail.com');
+        console.error('Form Error:', error);
+        alert('❌ Unable to submit. Please call +91-9416250082');
     } finally {
         button.textContent = originalText;
         button.disabled = false;
