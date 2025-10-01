@@ -9,7 +9,20 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+// Enhanced CORS configuration
+app.use(cors({
+    origin: [
+        'http://localhost:3000',
+        'https://aspohealthcare.onrender.com', // Add your Render domain
+        'https://*.onrender.com' // Allow all Render subdomains
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Add this BEFORE your routes
+app.options('*', cors()); // Enable pre-flight for all routes
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
