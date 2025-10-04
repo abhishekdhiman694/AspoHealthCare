@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - ASPO Healthcare</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11024732061"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'AW-11024732061');
+    </script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .thank-you-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            height: calc(100vh - 10px);
+            overflow: hidden;
+            animation: slideUp 0.7s ease-out;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .thank-you-header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            padding: 1.2rem 1rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .thank-you-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+        }
+
+        .success-icon {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.8rem;
+            font-size: 2rem;
+            color: #10b981;
+            animation: iconPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s both;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes iconPop {
+            0% {
+                transform: scale(0) rotate(-180deg);
+            }
+
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .thank-you-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .thank-you-header p {
+            font-size: 0.9rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-strip {
+            background: linear-gradient(90deg, #f8fafc 0%, #e2e8f0 100%);
+            padding: 0.5rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+            flex-shrink: 0;
+        }
+
+        .brand-strip p {
+            color: #475569;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .brand-strip .highlight {
+            color: #1e40af;
+            font-weight: 700;
+        }
+
+        .thank-you-body {
+            padding: 1rem;
+            text-align: center;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .thank-you-body h2 {
+            color: #0f172a;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .thank-you-body>p {
+            color: #475569;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+        }
+
+        .info-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.8rem;
+            margin: 0.8rem 0;
+            flex-shrink: 0;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 0.8rem 0.6rem;
+            border-radius: 8px;
+            transition: all 0.4s ease;
+            border: 1px solid #e2e8f0;
+            cursor: default;
+        }
+
+        .info-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.15);
+            border-color: #3b82f6;
+        }
+
+        .info-box-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .info-box-label {
+            font-size: 0.6rem;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.1rem;
+        }
+
+        .info-box-value {
+            font-size: 0.8rem;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .features-section {
+            background: #f8fafc;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            border: 1px solid #e2e8f0;
+            flex-shrink: 0;
+        }
+
+        .features-section h3 {
+            color: #1e40af;
+            font-size: 0.95rem;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 0.6rem;
+        }
+
+        .feature-item {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .feature-text {
+            color: #475569;
+            font-size: 0.7rem;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: auto;
+            padding-top: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1e40af;
+            border: 2px solid #1e40af;
+            box-shadow: 0 2px 8px rgba(30, 64, 175, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: #1e40af;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 0.8rem;
+            color: white;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contact-section h3 {
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .social-link:hover {
+            transform: scale(1.05) rotate(5deg);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .social-link img {
+            transition: transform 0.3s ease;
+            width: 20px;
+            height: 20px;
+        }
+
+        .social-link:hover img {
+            transform: scale(1.05);
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 0.3rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.7rem;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 2px;
+            }
+
+            .thank-you-container {
+                height: calc(100vh - 4px);
+                border-radius: 16px;
+            }
+
+            .thank-you-header {
+                padding: 1rem 0.8rem;
+            }
+
+            .thank-you-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .thank-you-body {
+                padding: 0.8rem;
+            }
+
+            .thank-you-body h2 {
+                font-size: 1.1rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .info-boxes {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.4rem;
+            }
+
+            .brand-strip {
+                padding: 0.4rem 0.8rem;
+            }
+
+            .contact-section {
+                padding: 0.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Event snippet for Website lead conversion page -->
+    <script>
+        gtag('event', 'conversion', { 'send_to': 'AW-11024732061/6PCkCIXiioMYEJ2fgIkp' });
+    </script>
+
+    <div class="thank-you-container">
+        <div class="thank-you-header">
+            <div class="success-icon">✓</div>
+            <h1>Thank You!</h1>
+            <p>Your enquiry has been received successfully</p>
+        </div>
+
+        <div class="brand-strip">
+            <p><span class="highlight">ASPO Healthcare Private Ltd.</span> | Premier Pharmaceutical Franchise & CRAMS
+                Company</p>
+        </div>
+
+        <div class="thank-you-body">
+            <h2>We'll Get Back to You Soon</h2>
+            <p>Our dedicated team at ASPO Healthcare will carefully review your enquiry and respond within <strong>24
+                    hours</strong>. We're excited to help you explore our WHO-GMP & GLP compliant pharmaceutical
+                solutions.</p>
+
+            <div class="info-boxes">
+                <div class="info-box">
+                    <div class="info-box-icon">📧</div>
+                    <div class="info-box-label">Email Confirmation</div>
+                    <div class="info-box-value">Check your inbox</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-icon">📞</div>
+                    <div class="info-box-label">Call Us Anytime</div>
+                    <div class="info-box-value">+91 94162 50082</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-icon">⏰</div>
+                    <div class="info-box-label">Response Time</div>
+                    <div class="info-box-value">Within 24 Hours</div>
+                </div>
+            </div>
+
+            <div class="features-section">
+                <h3>Why Choose ASPO Healthcare?</h3>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">🏆</div>
+                        <div class="feature-text">WHO-GMP & GLP Compliant</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💊</div>
+                        <div class="feature-text">1200+ Brands</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-text">Monopoly Rights</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✨</div>
+                        <div class="feature-text">Premium Quality</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a href="index.html" class="btn btn-primary">
+                    🏠 Back to Home
+                </a>
+                <a href="tel:+919416250082" class="btn btn-secondary">
+                    📞 Call Us Now
+                </a>
+            </div>
+        </div>
+
+        <div class="contact-section">
+            <h3>Stay Connected With Us</h3>
+            <div class="social-links">
+                <a href="mailto:aspohealthcare@gmail.com" class="social-link" title="Email Us">
+                    <img width="20" height="20" src="https://img.icons8.com/color/48/gmail-new.png" alt="gmail">
+                </a>
+                <a href="tel:+919416250082" class="social-link" title="Call Us">
+                    <img width="20" height="20" src="https://img.icons8.com/color/48/apple-phone.png" alt="phone">
+                </a>
+                <a href="https://wa.me/919416250082" target="_blank" class="social-link" title="WhatsApp">
+                    <img width="20" height="20" src="https://img.icons8.com/color/48/whatsapp--v1.png" alt="whatsapp">
+                </a>
+                <a href="https://www.facebook.com/Aspohealth" target="_blank" class="social-link" title="Facebook">
+                    <img width="20" height="20" src="https://img.icons8.com/fluency/48/facebook.png" alt="facebook">
+                </a>
+            </div>
+            <div class="footer-note">
+                <p>Monday - Friday | 9:00 AM - 6:00 PM</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

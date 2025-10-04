@@ -4,8 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASPO Healthcare - PCD Pharma Franchise | Third-Party Manufacturing</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <meta name="description"
         content="ASPO Healthcare provides WHO-GMP medicines across tablets, injectables, syrups. Join our PCD franchise network or request third-party manufacturing quotes.">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11024732061"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'AW-11024732061');
+    </script>
     <style>
         * {
             margin: 0;
@@ -322,7 +330,7 @@
         .stat-number {
             font-size: clamp(2.5rem, 5vw, 3.5rem);
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            background: linear-gradient(135deg, var(--primary-blue), #131415);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -732,7 +740,7 @@
             overflow: visible;
         }
 
-        /* Individual product cards */
+        /* Individual product cards - INCREASED SIZE */
         .product-card {
             background: white;
             border-radius: 15px;
@@ -742,8 +750,10 @@
             overflow: visible;
             display: flex;
             flex-direction: column;
-            min-width: 280px;
-            max-width: 320px;
+            min-width: 350px;
+            /* Increased from 280px */
+            max-width: 400px;
+            /* Increased from 320px */
             flex-shrink: 0;
             position: relative;
         }
@@ -753,10 +763,11 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
         }
 
-        /* Product image container - this is the key fix */
+        /* Product image container - SIGNIFICANTLY INCREASED HEIGHT */
         .product-image-wrapper {
             width: 100%;
-            height: 280px;
+            height: 400px;
+            /* Increased from 280px */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -764,7 +775,8 @@
             border-radius: 15px 15px 0 0;
             overflow: hidden;
             position: relative;
-            padding: 20px;
+            padding: 25px;
+            /* Increased padding */
         }
 
         .product-image {
@@ -956,13 +968,25 @@
             }
 
             .product-card {
-                min-width: 450px;
-                max-width: 480px;
+                min-width: 300px;
+                /* Adjusted for mobile */
+                max-width: 350px;
             }
 
             .product-image-wrapper {
-                height: 220px;
-                padding: 15px;
+                height: 320px;
+                /* Increased from 220px */
+                padding: 20px;
+            }
+
+            .gallery-item {
+                width: 280px;
+                height: 280px;
+            }
+
+            .product-slider {
+                gap: 1rem;
+                padding: 0 1rem;
             }
 
             .product-nav {
@@ -973,13 +997,19 @@
 
         @media (max-width: 480px) {
             .product-card {
-                min-width: 220px;
-                max-width: 250px;
+                min-width: 260px;
+                max-width: 300px;
             }
 
             .product-image-wrapper {
-                height: 200px;
-                padding: 10px;
+                height: 280px;
+                /* Increased from 200px */
+                padding: 15px;
+            }
+
+            .gallery-item {
+                width: 240px;
+                height: 240px;
             }
 
             .product-content {
@@ -1668,8 +1698,10 @@
 
         .gallery-item {
             flex: 0 0 auto;
-            width: 270px;
-            height: 270px;
+            width: 350px;
+            /* Increased from 270px */
+            height: 350px;
+            /* Increased from 270px */
             position: relative;
             border-radius: 10px;
             overflow: hidden;
@@ -1686,8 +1718,12 @@
         .gallery-item img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            /* Changed to contain to show full image */
             border-radius: 8px;
+            padding: 15px;
+            /* Added padding to give space around image */
+            background: white;
         }
 
         .gallery-item-info {
@@ -2141,6 +2177,142 @@
                 padding: 0.7rem 0.9rem;
             }
         }
+
+        /* Custom Modal Popup Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .custom-modal {
+            background: white;
+            border-radius: 20px;
+            padding: 0;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            transform: scale(0.7) translateY(50px);
+            animation: modalSlideIn 0.4s ease forwards;
+            overflow: hidden;
+        }
+
+        @keyframes modalSlideIn {
+            to {
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header-custom {
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-header-custom.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .modal-header-custom.error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .modal-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            animation: iconPop 0.5s ease 0.2s both;
+        }
+
+        @keyframes iconPop {
+            0% {
+                transform: scale(0);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .modal-title-custom {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .modal-body-custom {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .modal-message {
+            font-size: 1.1rem;
+            color: var(--text-medium);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .modal-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
     </style>
 </head>
 
@@ -2177,8 +2349,13 @@
                         ISO compliant solutions for healthcare excellence.</p>
                 </div>
                 <div class="hero-form-container">
-                    <form class="hero-form">
-                        <!-- <h3>Get Started Today</h3> -->
+                    <form class="hero-form" action="https://formsubmit.co/vizztechsolutions@gmail.com" method="POST">
+                        <!-- FormSubmit Configuration -->
+                        <input type="hidden" name="_next" value="http://192.168.1.4:5501/public/thank-you.html">
+                        <input type="hidden" name="_subject" value="New Enquiry from ASPO Healthcare Website">
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_template" value="table">
+
                         <div class="form-group">
                             <label for="hero-name">Your Name *</label>
                             <input type="text" id="hero-name" name="name" required placeholder="Enter your name">
@@ -2423,7 +2600,13 @@
                         <li>Regular training programs</li>
                     </ul>
                 </div>
-                <form class="franchise-form">
+                <form class="franchise-form" action="https://formsubmit.co/vizztechsolutions@gmail.com" method="POST">
+                    <!-- FormSubmit Configuration -->
+                    <input type="hidden" name="_next" value="http://192.168.1.4:5501/public/thank-you.html">
+                    <input type="hidden" name="_subject" value="New Franchise Application - ASPO Healthcare">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+
                     <h3>Apply for PCD Franchise Partnership</h3>
                     <div class="form-group">
                         <label for="name">Full Name *</label>
@@ -2607,12 +2790,12 @@
                 width: 50px;
                 height: 50px;
                 background: rgba(255, 255, 255, 0.9);
-                color: #1e3c72;
+                color: #acb5c5;
                 border-radius: 50%;
                 font-size: 1.3rem;
                 transition: all 0.3s ease;
                 backdrop-filter: blur(10px);
-                border: 2px solid rgba(255, 255, 255, 0.3);
+                border: 2px solid rgb(255, 255, 255);
                 text-decoration: none;
                 margin: 0 5px;
             }
@@ -2741,7 +2924,7 @@
             footer .stat-number {
                 font-size: 2rem;
                 font-weight: bold;
-                color: #ffffff;
+                color: #d6cdcd;
                 display: block;
                 text-shadow: 0 2px 8px rgba(20, 103, 237, 0.5);
                 margin-bottom: 6px;
@@ -2842,9 +3025,12 @@
                     </div>
 
                     <div class="social-links">
-                        <a href="mailto:info@aspohealthcare.com" class="social-link">📧</a>
-                        <a href="tel:+919416300000" class="social-link">📞</a>
-                        <a href="#" class="social-link">🔗</a>
+                        <a href="mailto:info@aspohealthcare.com" class="social-link"><img width="48" height="48"
+                                src="https://img.icons8.com/color/48/gmail-new.png" alt="gmail-new" /></a>
+                        <a href="tel:+919416300000" class="social-link"><img width="48" height="48"
+                                src="https://img.icons8.com/color/48/apple-phone.png" alt="apple-phone" /></a>
+                        <a href="https://www.facebook.com/Aspohealth" class="social-link"><img width="48" height="48"
+                                src="https://img.icons8.com/fluency/48/facebook.png" alt="facebook" /></a>
                     </div>
                 </div>
 
@@ -2904,135 +3090,142 @@
     </footer>
 
 
-
+    <!-- Custom Modal Popup -->
+    <div id="customModal" class="modal-overlay">
+        <div class="custom-modal">
+            <div id="modalHeader" class="modal-header-custom success">
+                <div class="modal-icon" id="modalIcon">✓</div>
+                <h3 class="modal-title-custom" id="modalTitle">Success!</h3>
+            </div>
+            <div class="modal-body-custom">
+                <p class="modal-message" id="modalMessage">Your form has been submitted successfully!</p>
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-primary" onclick="closeModal()">OK, Got it!</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script>
-        document.querySelector('.hero-form').addEventListener('submit', async function (e) {
-            e.preventDefault();
+        // Custom Modal Functions
+        function showModal(type, title, message) {
+            const modal = document.getElementById('customModal');
+            const modalHeader = document.getElementById('modalHeader');
+            const modalIcon = document.getElementById('modalIcon');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+
+            modalHeader.className = `modal-header-custom ${type}`;
+            modalIcon.textContent = type === 'success' ? '✓' : '✕';
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('customModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.getElementById('customModal').addEventListener('click', function (e) {
+            if (e.target === this) closeModal();
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Hero Form Submission
+        document.querySelector('.hero-form').addEventListener('submit', function (e) {
+            /*e.preventDefault();*/
 
             const button = this.querySelector('button[type="submit"]');
-            const originalText = button.textContent;
             button.textContent = 'Sending...';
             button.disabled = true;
 
-            const formData = {
-                name: document.getElementById('hero-name').value,
-                email: document.getElementById('hero-email').value,
-                phone: document.getElementById('hero-phone').value,
-                city: document.getElementById('hero-city').value
+            // Create a temporary form to submit via FormSubmit
+            const tempForm = document.createElement('form');
+            tempForm.action = 'https://formsubmit.co/vizztechsolutions@gmail.com';
+            tempForm.method = 'POST';
+            tempForm.style.display = 'none';
+
+            // Copy all form data
+            const formData = new FormData(form);
+            formData.forEach((value, key) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                tempForm.appendChild(input);
+            });
+
+            // Add FormSubmit configuration
+            const configs = {
+                '_next': window.location.origin + '/public/thank-you.html',
+                '_subject': 'New Enquiry from ASPO Healthcare Website',
+                '_captcha': 'false',
+                '_template': 'table'
             };
 
-            try {
-                const response = await fetch('/api/hero-enquiry', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
+            Object.keys(configs).forEach(key => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = configs[key];
+                tempForm.appendChild(input);
+            });
 
-                const data = await response.json();
-
-                if (data.success) {
-                    alert('✅ ' + data.message);
-                    this.reset();
-                } else {
-                    alert('❌ ' + data.message);
-                }
-            } catch (error) {
-                alert('❌ Network error. Please check your connection or call us directly at +91-9416250082');
-            } finally {
-                button.textContent = originalText;
-                button.disabled = false;
-            }
+            document.body.appendChild(tempForm);
+            tempForm.submit();
         });
 
         // Franchise Form Submission
-        document.querySelector('.franchise-form').addEventListener('submit', async function (e) {
-            e.preventDefault();
+        document.querySelector('.franchise-form').addEventListener('submit', function (e) {
+            /*e.preventDefault();*/
 
             const button = this.querySelector('button[type="submit"]');
-            const originalText = button.textContent;
             button.textContent = 'Submitting Application...';
             button.disabled = true;
 
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                message: document.getElementById('message').value
+            // Create a temporary form to submit via FormSubmit
+            const tempForm = document.createElement('form');
+            tempForm.action = 'https://formsubmit.co/vizztechsolutions@gmail.com';
+            tempForm.method = 'POST';
+            tempForm.style.display = 'none';
+
+            // Copy all form data
+            const formData = new FormData(form);
+            formData.forEach((value, key) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                tempForm.appendChild(input);
+            });
+
+            // Add FormSubmit configuration
+            const configs = {
+                '_next': window.location.origin + '/thank-you.html',
+                '_subject': 'New Franchise Application - ASPO Healthcare',
+                '_captcha': 'false',
+                '_template': 'table'
             };
 
-            try {
-                const response = await fetch('/api/franchise-application', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
+            Object.keys(configs).forEach(key => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = configs[key];
+                tempForm.appendChild(input);
+            });
 
-                const data = await response.json();
-
-                if (data.success) {
-                    alert('✅ ' + data.message);
-                    this.reset();
-                } else {
-                    alert('❌ ' + data.message);
-                }
-            } catch (error) {
-                alert('❌ Network error. Please check your connection or call us directly at +91-9416250082');
-            } finally {
-                button.textContent = originalText;
-                button.disabled = false;
-            }
+            document.body.appendChild(tempForm);
+            tempForm.submit();
         });
-        /* function animateCounters() {
-             const counters = document.querySelectorAll('.stat-number');
- 
-             counters.forEach(counter => {
-                 const target = parseInt(counter.dataset.count);
-                 const duration = 2000;
-                 const step = target / (duration / 16);
-                 let current = 0;
- 
-                 const timer = setInterval(() => {
-                     current += step;
-                     if (current >= target) {
-                         counter.textContent = target.toLocaleString();
-                         clearInterval(timer);
-                     } else {
-                         counter.textContent = Math.floor(current).toLocaleString();
-                     }
-                 }, 16);
-             });
-         }
- 
-         const trustStripObserver = new IntersectionObserver((entries) => {
-             entries.forEach(entry => {
-                 if (entry.isIntersecting) {
-                     animateCounters();
-                     trustStripObserver.unobserve(entry.target);
-                 }
-             });
-         }, {
-             threshold: 0.5
-         });
- 
-         document.addEventListener('DOMContentLoaded', function () {
-             const trustStrip = document.querySelector('.trust-strip');
-             if (trustStrip) {
-                 trustStripObserver.observe(trustStrip);
-             }
-         });
- 
-         const badges = document.querySelectorAll('.badge');
-         badges.forEach((badge, index) => {
-             badge.style.animationDelay = `${index * 0.1}s`;
-         });*/
-
-
+    
 
         // Enhanced product data with 16 products per category
         const allProducts = [
@@ -3046,7 +3239,7 @@
             { name: 'Ascoferol Drops Syrup', img: 'PAGE/images/ascoferol_drops_syrup.jpg' },
             { name: 'Ascoferol Softgels', img: 'PAGE/images/ascoferol_softgels.jpg' },
             { name: 'Ascopene', img: 'PAGE/images/ascopene.jpg' },
-            { name: 'Ascopene Plus', img: 'PAGE/images/ascopene_plus.jpg' },
+            { name: 'Cloice', img: 'PAGE/images/cloice_powder.jpg' },
             { name: 'Asetron', img: 'PAGE/images/asetron.jpg' },
             { name: 'Asetron Injection', img: 'PAGE/images/asetron_Injection.jpg' },
             { name: 'Asgab', img: 'PAGE/images/asgab.jpg' },
@@ -3056,7 +3249,7 @@
             { name: 'Asmecob-1500', img: 'PAGE/images/asmecob_injection.jpg' },
             { name: 'Asper', img: 'PAGE/images/asper_soap.jpg' },
             { name: 'Asphylin-100', img: 'PAGE/images/asphylin.jpg' },
-            { name: 'Aspocef-50 Dry Syrup', img: 'PAGE/images/aspocef-50_drysyrup.jpg' },
+            /*{ name: 'Aspocef-50 Dry Syrup', img: 'PAGE/images/aspocef-50_drysyrup.jpg' },
             { name: 'Aspocef-100 Dry Syrup', img: 'PAGE/images/aspocef-100_drysyrup.jpg' },
             { name: 'Aspodix-CV 51.25', img: 'PAGE/images/aspodix-cv_drysyrup.jpg' },
             { name: 'Aspoors Juice', img: 'PAGE/images/aspoors_juice.jpg' },
@@ -3066,7 +3259,7 @@
             { name: 'Ketpole Plus', img: 'PAGE/images/ketpole_shampoo.jpg' },
             { name: 'Onion Oil', img: 'PAGE/images/onionoil.jpg' },
             { name: 'Oris Apple', img: 'PAGE/images/orsapple.jpg' },
-            { name: 'Oris Orange', img: 'PAGE/images/orsorange.jpg' }
+            { name: 'Oris Orange', img: 'PAGE/images/orsorange.jpg' }*/
         ];
 
         // Gallery state
@@ -3273,35 +3466,7 @@
             return true;
         }
 
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                let isValid = true;
-                const requiredInputs = this.querySelectorAll('input[required], textarea[required]');
-
-                requiredInputs.forEach(input => {
-                    if (!validateInput(input)) {
-                        isValid = false;
-                    }
-                });
-
-                if (isValid) {
-                    const button = this.querySelector('button[type="submit"]');
-                    const originalText = button.textContent;
-                    button.textContent = 'Submitting...';
-                    button.disabled = true;
-
-                    setTimeout(() => {
-                        alert(`Thank you for your ${this.classList.contains('franchise-form') ? 'franchise application' : 'message'}! We will get back to you within 24 hours.`);
-                        this.reset();
-                        button.textContent = originalText;
-                        button.disabled = false;
-                    }, 1500);
-                } else {
-                    alert('Please fill in all required fields correctly.');
-                }
-            });
-        });
+      
 
         document.addEventListener('DOMContentLoaded', function () {
             const inputs = document.querySelectorAll('form input, form textarea');
@@ -3540,5 +3705,8 @@
 
 
 </body>
+
+
+
 
 </html>
